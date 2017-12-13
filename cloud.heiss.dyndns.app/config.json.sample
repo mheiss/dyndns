@@ -1,0 +1,9 @@
+{  
+	"tenantId":"",
+	"clientId":"",
+	"key":"",
+	"resourceGroup":"",
+	"zoneName":"",
+	"ipServiceUrl": "",
+	"updateIntervalInMinutes": ""
+}
