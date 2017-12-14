@@ -12,6 +12,7 @@ The configuration file must contain the following information:
 * **key** - The KEY that has been used to create the application.
 * **resourceGroup** - The name of the resource group containing the DNS Zone.
 * **zoneName** - The name of the DNS zone to update.
+* **recordNames** - The name of the A records to update. Can be a comma separated list like: @, subdomain1, subdomain2  
 * **ipServiceUrl** - The URL to call in order to get the IP address.
 
 An optional configuration parameter is available to schedule the update on a regular base. If the parameter is configured then the application keeps running and triggers an update in the configured interval. 

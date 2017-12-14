@@ -4,6 +4,7 @@
 	"key":"",
 	"resourceGroup":"",
 	"zoneName":"",
+	"recordNames" : "",
 	"ipServiceUrl": "",
 	"updateIntervalInMinutes": ""
 }

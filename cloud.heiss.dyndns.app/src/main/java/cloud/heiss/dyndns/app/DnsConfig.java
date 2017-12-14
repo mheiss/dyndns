@@ -3,6 +3,9 @@ package cloud.heiss.dyndns.app;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.TreeSet;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -44,6 +47,11 @@ public class DnsConfig {
 	public final String zoneName;
 
 	/**
+	 * Comma separated list of record names to update.
+	 */
+	public final Set<String> recordNames;
+
+	/**
 	 * The URL to call in order to get the IP address.
 	 */
 	public final String ipServiceUrl;
@@ -65,6 +73,7 @@ public class DnsConfig {
 			key = object.get("key").getAsString();
 			resourceGroup = object.get("resourceGroup").getAsString();
 			zoneName = object.get("zoneName").getAsString();
+			recordNames = new TreeSet<>(Arrays.asList(object.get("recordNames").getAsString().split(",")));
 			ipServiceUrl = object.get("ipServiceUrl").getAsString();
 			if (object.has("updateIntervalInMinutes")) {
 				updateIntervalInMinutes = object.get("updateIntervalInMinutes").getAsInt();
