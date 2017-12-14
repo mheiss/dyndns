@@ -1,0 +1,11 @@
+[Unit]
+Description=DynDns client application
+Documentation=https://github.com/mheiss/dyndns
+Wants=network-online.target
+After=network-online.target
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+ExecStart=/usr/bin/java -jar /etc/dyndns/dyndns-app-1.0.0-jar-with-dependencies.jar config.json
