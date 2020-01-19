@@ -15,4 +15,4 @@ jobs:
         java-version: 1.8
 
     - name: Build with Maven
-      run: mvn mvn assembly:assembly -DdescriptorId=jar-with-dependencies --file cloud.heiss.dyndns.app/pom.xml
+      run: mvn assembly:assembly -DdescriptorId=jar-with-dependencies --file cloud.heiss.dyndns.app/pom.xml
