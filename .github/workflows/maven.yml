@@ -16,3 +16,8 @@ jobs:
 
     - name: Build with Maven
       run: mvn assembly:assembly -DdescriptorId=jar-with-dependencies --file cloud.heiss.dyndns.app/pom.xml
+    
+    - uses: actions/upload-artifact@v1
+      with:
+        name: dyndns-app-1.0.0-jar-with-dependencies.jar
+        path: cloud.heiss.dyndns.app/target/dyndns-app-1.0.0-jar-with-dependencies.jar
