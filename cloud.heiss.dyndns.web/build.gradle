@@ -1,0 +1,23 @@
+plugins {
+    id 'org.gretty' version "4.1.2"
+    id 'java'
+    id 'war'
+}
+ 
+repositories {
+    mavenCentral()
+}
+ 
+dependencies {
+   providedRuntime group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: '6.0.0'
+}
+
+war {
+    webAppDirectory = file('src/main/webapp')
+}
+
+gretty {
+    httpPort = 8080
+}
+
+ 

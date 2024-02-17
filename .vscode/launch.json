@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "DynDnsApp",
+            "request": "launch",
+            "mainClass": "cloud.heiss.dyndns.app.UpdateDnsZone",
+            "projectName": "cloud.heiss.dyndns.app",
+            "args": "${workspaceFolder}/cloud.heiss.dyndns.app/config/config.json"
+        }
+    ]
+}

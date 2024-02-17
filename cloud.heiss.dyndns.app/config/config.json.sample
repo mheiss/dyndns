@@ -1,0 +1,11 @@
+{
+    "subscriptionId": "",
+    "tenantId": "",
+    "clientId": "",
+    "key": "",
+    "resourceGroup": "",
+    "zoneName": "",
+    "recordNames": [],
+    "ipServiceUrl": "",
+    "updateIntervalInMinutes": ""
+}
