@@ -4,5 +4,25 @@
         "**/.gradle": true,
         "**/bin": true,
         "**/build": true
-    }
+    },
+    "cSpell.words": [
+        "badauth",
+        "databind",
+        "dyndns",
+        "fasterxml",
+        "github",
+        "gradlew",
+        "jackson",
+        "jboss",
+        "myip",
+        "nochg",
+        "picocli",
+        "quarkus",
+        "resourcemanager",
+        "routerpass",
+        "routeruser",
+        "softprops",
+        "temurin",
+        "unifi"
+    ]
 }
