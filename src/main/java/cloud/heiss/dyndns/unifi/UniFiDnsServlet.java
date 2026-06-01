@@ -2,6 +2,10 @@ package cloud.heiss.dyndns.unifi;
 
 import java.io.IOException;
 import java.util.Base64;
+import java.util.stream.Stream;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
@@ -11,12 +15,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet(urlPatterns = "/nic/update")
-public class DynDnsServlet extends HttpServlet {
-    private static final String USER = "routeruser";
-    private static final String PASS = "routerpass";
+public class UniFiDnsServlet extends HttpServlet {
 
     @Inject
-    DnsConfigDto configDto;
+    AzureConfigDto azureConfig;
+
+    @Inject
+    UniFiConfigDto unifiConfig;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -28,7 +33,7 @@ public class DynDnsServlet extends HttpServlet {
             return;
         }
         String decoded = new String(Base64.getDecoder().decode(auth.substring(6)));
-        if (!decoded.equals(USER + ":" + PASS)) {
+        if (!decoded.equals(unifiConfig.username() + ":" + unifiConfig.password())) {
             resp.getWriter().write("badauth");
             return;
         }
@@ -39,19 +44,13 @@ public class DynDnsServlet extends HttpServlet {
             return;
         }
 
-        boolean changed = updateDnsRecord(ip);
+        AzureDnsUpdater updater = new AzureDnsUpdater(azureConfig);
+        boolean changed = updater.update(ip);
         if (changed) {
             resp.getWriter().write("good " + ip);
         } else {
             resp.getWriter().write("nochg " + ip);
         }
-    }
-
-    private boolean updateDnsRecord(String ip) {
-        DnsUpdater updater = new DnsUpdater(configDto);
-        updater.update(ip);
-
-        return true;
     }
 
 }
