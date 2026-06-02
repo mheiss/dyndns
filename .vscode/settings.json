@@ -16,6 +16,8 @@
         "jboss",
         "myip",
         "nochg",
+        "noip",
+        "notfqdn",
         "picocli",
         "quarkus",
         "resourcemanager",

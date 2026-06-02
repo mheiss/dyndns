@@ -64,8 +64,9 @@ public class AzureDnsUpdater {
      * Connects to AZURE and updates the DNS entry.
      * 
      * @param iPv4Address the IP address to set in the DNS record
+     * @return true if the DNS record was updated, false if it was already up-2-date
      */
-    public void update(String iPv4Address) {
+    public boolean update(String iPv4Address) {
         // Query the configured record names to update
         Set<String> toUpdate4 = new TreeSet<>(config.recordNames4().orElse(new ArrayList<>()));
 
@@ -87,7 +88,7 @@ public class AzureDnsUpdater {
         }
         if (toUpdate4.isEmpty()) {
             logger.info("All DNS entries are up-2-date. Nothing to do.");
-            return;
+            return false;
         }
 
         // Update or create the entry
@@ -100,6 +101,7 @@ public class AzureDnsUpdater {
             logger.info("{}: IPv4 address of DNS zone updated.", name);
         }
         update.apply();
+        return true;
     }
 
     /**
