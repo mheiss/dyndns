@@ -18,11 +18,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-artifacts
+          path: build-artifacts
 
       - name: Prepare release directory
         run: |
           mkdir release
-          cp -r quarkus-app release/
+          cp -r build-artifacts/quarkus-app release/
           echo "# Run the app" > release/run.sh
           echo "java -jar quarkus-app/quarkus-run.jar" >> release/run.sh
           chmod +x release/run.sh
@@ -43,13 +44,16 @@ jobs:
 
     steps:
       - name: Download packaged artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: release-zip
-
-      - name: Publish GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: quarkus-app-${{ github.ref_name }}.zip
+          path: release-zip
+      - name: Publish release
+        run: |
+          gh release create "${GITHUB_REF_NAME}" \
+            "release-zip/quarkus-app-${GITHUB_REF_NAME}.zip" \
+            --title "Release ${GITHUB_REF_NAME}" \
+            --notes "Automated release"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

@@ -2,7 +2,6 @@ package cloud.heiss.dyndns.unifi;
 
 import java.io.IOException;
 import java.util.Base64;
-import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +16,11 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet(urlPatterns = "/nic/update")
 public class UniFiDnsServlet extends HttpServlet {
 
+    private final static Logger logger = LoggerFactory.getLogger(UniFiDnsServlet.class);
+
+    @Inject
+    AzureDnsUpdater dnsUpdater;
+
     @Inject
     AzureConfigDto azureConfig;
 
@@ -26,30 +30,32 @@ public class UniFiDnsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/plain");
+        logger.info("Received update request: '{}'", req.getRequestURL() + "?" + req.getQueryString());
 
         String auth = req.getHeader("Authorization");
         if (auth == null || !auth.startsWith("Basic ")) {
-            resp.getWriter().write("badauth");
+            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "badauth");
             return;
         }
         String decoded = new String(Base64.getDecoder().decode(auth.substring(6)));
-        if (!decoded.equals(unifiConfig.username() + ":" + unifiConfig.password())) {
-            resp.getWriter().write("badauth");
+        if (!decoded.equals(unifiConfig.username().get() + ":" + unifiConfig.password().get())) {
+            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "badauth");
             return;
         }
 
         String ip = req.getParameter("myip");
         if (ip == null) {
-            resp.getWriter().write("nohost");
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "No IP provided");
             return;
         }
 
-        AzureDnsUpdater updater = new AzureDnsUpdater(azureConfig);
-        boolean changed = updater.update(ip);
-        if (changed) {
-            resp.getWriter().write("good " + ip);
-        } else {
-            resp.getWriter().write("nochg " + ip);
+        try {
+            dnsUpdater.update(ip);
+            resp.setStatus(HttpServletResponse.SC_OK);
+        } catch (Exception e) {
+            logger.error("Error updating DNS record", e);
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "azure update error");
+            return;
         }
     }
 

@@ -1,6 +1,7 @@
 package cloud.heiss.dyndns.unifi;
 
 import java.util.List;
+import java.util.Optional;
 
 import io.smallrye.config.ConfigMapping;
 
@@ -44,7 +45,12 @@ public interface AzureConfigDto {
     public String zoneName();
 
     /**
-     * List of record names to update.
+     * List of IPv4 record names to update.
      */
-    public List<String> recordNames();
+    public Optional<List<String>> recordNames4();
+
+    /**
+     * List of IPv6 record names to update.
+     */
+    public Optional<List<String>> recordNames6();
 }
